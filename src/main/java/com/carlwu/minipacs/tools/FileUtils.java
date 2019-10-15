@@ -284,7 +284,7 @@ public class FileUtils {
 
         for (int i = 0; i < tempList.length; i++) {
             if (tempList[i].isFile()) {
-                files.add(tempList[i].toString());
+                files.add(tempList[i].getAbsolutePath());
                 //文件名，不包含路径
 //                String fileName = tempList[i].getName();
 //                System.out.println(fileName);
@@ -306,14 +306,17 @@ public class FileUtils {
             if (tempList[i].isFile()) {
                 dcmFilePath = tempList[i].getAbsolutePath();
                 if (dcmFilePath.endsWith("dcm") || dcmFilePath.endsWith("DCM")) {
+//                    System.out.println(dcmFilePath);
                     break;
                 }
             }
             if (tempList[i].isDirectory()) {
                 //这里就不递归了，
-                getFiles(tempList[i].getAbsolutePath());
+                dcmFilePath= getFilesOfOne(tempList[i].getAbsolutePath());
+//                System.out.println(dcmFilePath);
             }
         }
+
         return dcmFilePath;
     }
 
@@ -399,7 +402,9 @@ public class FileUtils {
 
 
     public static void main(String[] args) {
-        getDcmDir("/home/burgess/pacs/dicom");
+       String files = getFilesOfOne("/home/burgess/pacs/dicom/201803502_1.2.840.113619.2.278.3.839569194.406.1566954974.988_Lan Heng Fu");
+        System.out.println(files);
+
     }
 
 }

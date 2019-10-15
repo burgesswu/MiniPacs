@@ -4,12 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.carlwu.minipacs.PACSClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.dcm4che3.data.Attributes;
+import org.dcm4che3.data.Tag;
 import org.dcm4che3.tool.storescu.StoreSCU;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
@@ -34,6 +39,14 @@ public class UploadDcmJob implements Job {
             List<String> files = FileUtils.getDcmDir(path);
             for (String fName : files) {
                 String filePath = path + "/" + fName;
+                //读取文件信息
+                String file_str = FileUtils.getFilesOfOne(filePath);
+                Attributes dataSet = DcmReader.readDcmFile(file_str);
+                if (dataSet != null) {
+                    String modality = dataSet.getString(Tag.Modality);
+
+
+                }
                 String[] fNameArr = fName.split("_");
                 File dirFile = new File(filePath + ".zip");
                 String fileKey = MD5Util.getMD5(fName);
@@ -46,12 +59,13 @@ public class UploadDcmJob implements Job {
                             if (!uploadQueue.containsKey(fileKey)) {
                                 Map<String, Object> storeMap = new HashMap<>();
                                 storeMap.put("filePath", filePath);
+                                storeMap.put("data", dataSet);
                                 uploadQueue.put(fileKey, storeMap);
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
                                         log.info("上传" + filePath + ".zip");
-                                        startNoticeToServiceSys(fName);
+                                        startNoticeToServiceSys(dataSet);
                                         String dst = "/home/dcm/"; // 目标文件名
                                         Map<String, String> sftpDetails = new HashMap<String, String>();
                                         sftpDetails.put(SftpUtil.SFTP_REQ_HOST, ConstantsTools.CONFIGER.getRemotePacsUrl());
@@ -79,22 +93,25 @@ public class UploadDcmJob implements Job {
                     long lastTime = (dirFile.lastModified() / 1000);
                     long currTime = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
                     if ((currTime - lastTime) > (60 * 5)) {
+                        addInLocalDb(dataSet);
                         if (!uploadQueue.containsKey(fileKey)) {
                             String onDcmPath = FileUtils.getFilesOfOne(filePath);
                             //读取文件信息
                             Map<String, Object> storeMap = new HashMap<>();
                             storeMap.put("filePath", filePath);
+                            storeMap.put("data", dataSet);
                             uploadQueue.put(fileKey, storeMap);
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
                                         log.info("开始上传.....");
-                                        startNoticeToServiceSys(fName);
+                                        startNoticeToServiceSys(dataSet);
                                         String url = PACSClient.class.getClassLoader().getResource("rel-sop-classes.properties").getPath();
                                         StoreSCU.main(new String[]{"storescu", "-c", ConstantsTools.CONFIGER.getRemotePacsAeTitle() + "@" + ConstantsTools.CONFIGER.getRemotePacsUrl() + ":" + ConstantsTools.CONFIGER.getRemotePacsPort(), "--rel-sop-classes", url, filePath});
-                                        log.info("上传完成.....");
-                                        updateNoticeToServiceSys(fName);
+                                        log.info("上传完成......");
+                                        updateNoticeToServiceSys(dataSet, 1);
+                                        updateLocalDb(dataSet);
                                     } catch (Exception e) {
                                         System.out.println(e.getMessage());
                                     }
@@ -113,29 +130,48 @@ public class UploadDcmJob implements Job {
         }
     }
 
-    private void startNoticeToServiceSys(String fName) {
-        String[] arr = fName.split("_");
+    private void startNoticeToServiceSys(Attributes dataset) {
         Map dataMap = new HashMap<String, String>();
-        dataMap.put("dicomSopuid", arr[1]);
-        dataMap.put("type", "CT");
-        dataMap.put("dicomPatientName", arr[2]);
-        dataMap.put("dicomSex", ("F".equals("F") ? 2 : 1) + "");
+        dataMap.put("dicomSopuid", dataset.getString(Tag.StudyInstanceUID));
+        dataMap.put("type", dataset.getString(Tag.Modality));
+        dataMap.put("dicomPatientName", dataset.getString(Tag.PatientName));
+        dataMap.put("dicomSex", (dataset.getString(Tag.PatientSex).equals("F") ? 2 : 1) + "");
         String res = HttpUtil.post(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", dataMap, ConstantsTools.CONFIGER.getToken());
         log.info(res);
-        JSONObject resData = JSON.parseObject(res);
+        if (StringUtils.isNotBlank(res)) {
+            JSONObject rjson = JSON.parseObject(res);
+            if (rjson.getString("message").indexOf("重复") > -1) {
+                updateNoticeToServiceSys(dataset, 0);
+            }
+        }
+
     }
 
 
+    private void addInLocalDb(Attributes dataset) throws SQLException {
+        DbUtilMySQL instance = DbUtilMySQL.getInstance();
+        String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + dataset.getString(Tag.PatientName) + "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.StudyID) + "', '" + LocalDateTime.now() + "')";
+        System.out.println(sql);
+        instance.executeUpdate(sql);
+        instance.getConnection().commit();
+    }
 
-    private void updateNoticeToServiceSys(String fName) {
+
+    private void updateLocalDb(Attributes dataset) throws SQLException {
+        DbUtilMySQL instance = DbUtilMySQL.getInstance();
+        String sql="UPDATE `files_log` SET end_time='" + LocalDateTime.now() + "' ,upload_status=3  WHERE uid='" + dataset.getString(Tag.StudyInstanceUID) + "'";
+        instance.executeUpdate(sql);
+        instance.getConnection().commit();
+    }
+
+    private void updateNoticeToServiceSys(Attributes dataset, Integer uploadOk) {
         //修改状态
-        String[] arr = fName.split("_");
         Map updateDataMap = new HashMap<String, String>();
-        updateDataMap.put("dicomSopuid", arr[1]);
+        updateDataMap.put("dicomSopuid", dataset.getString(Tag.StudyInstanceUID));
+        updateDataMap.put("uploadOk", uploadOk + "");
         String updateRes = HttpUtil.put(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", updateDataMap, ConstantsTools.CONFIGER.getToken());
         log.info("---------------------状态更新完成------------------");
-        log.info(updateRes);
-        JSONObject updateResData = JSON.parseObject(updateRes);
+
 
     }
 

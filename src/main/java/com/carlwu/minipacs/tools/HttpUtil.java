@@ -109,8 +109,8 @@ public class HttpUtil {
         HttpEntity entity = response.getEntity();
 
         log.info("response status: " + response.getStatusLine());
-        String charset = ContentType.get(entity).getCharset().name();
-        log.info(charset);
+//        String charset = ContentType.get(entity).getCharset().name();
+//        log.info(charset);
 
         String body = null;
         try {

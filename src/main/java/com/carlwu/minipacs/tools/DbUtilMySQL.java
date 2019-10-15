@@ -63,6 +63,22 @@ public class DbUtilMySQL {
         }
     }
 
+    private void t_loadConfig() {
+        try {
+            String dbclassname = "com.mysql.jdbc.Driver";
+            DBUrl = "127.0.0.1";
+            DBName = "miniPacs";
+            DBUser = "root";
+            DBPassword = "123456";
+
+            Class.forName(dbclassname);
+        } catch (Exception e) {
+
+            logger.error(e.toString());
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 获取连接，线程安全
      *
@@ -212,4 +228,8 @@ public class DbUtilMySQL {
         return result;
     }
 
+
+    public static void main(String[] args) {
+        DbUtilMySQL.getInstance();
+    }
 }

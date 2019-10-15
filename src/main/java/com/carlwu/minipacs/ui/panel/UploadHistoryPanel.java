@@ -161,20 +161,18 @@ public class UploadHistoryPanel extends JPanel {
     public static void initTableData() {
         try {
             DbUtilMySQL instance = DbUtilMySQL.getInstance();
-            ResultSet resultSet = instance.executeQuery("select * from files_log");
+            ResultSet resultSet = instance.executeQuery("select * from files_log order by start_time desc");
+            int i=0;
+            resultSet.last();
+
+            tableDatas = new Object[resultSet.getRow()][7];
+            resultSet.first();
+            while (resultSet.next()){
+                tableDatas[i] = new Object[]{resultSet.getInt("id"), resultSet.getString("study_no"), resultSet.getString("patient_name"), resultSet.getString("uid"), 1, 100, "待压缩"};
+                i++;
+            }
 
         } catch (Exception e) {
-        }
-
-        String path = ConstantsTools.CONFIGER.getLocalDicomPath();//dicom 文件地址
-        java.util.List<String> files = FileUtils.getDcmDir(path);
-        tableDatas = new Object[files.size()][7];
-        for (int i = 0; i < files.size(); i++) {
-            String fileName = files.get(i);
-            String[] arr = fileName.split("_");
-            File currFile = new File(path + "/" + fileName);
-            long fileCount = FileUtils.getlist(currFile);
-            tableDatas[i] = new Object[]{i + 1, arr[0], arr[2], arr[1], fileCount, org.apache.commons.io.FileUtils.sizeOfDirectory(currFile), "待压缩"};
         }
 
 
@@ -182,15 +180,6 @@ public class UploadHistoryPanel extends JPanel {
 
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-
-                java.util.List<String> files = FileUtils.getDcmDir(path);
-                tableDatas = new Object[files.size()][7];
-                for (int i = 0; i < files.size(); i++) {
-                    String fileName = files.get(i);
-                    String[] arr = fileName.split("_");
-                    tableDatas[i] = new Object[]{i + 1, arr[0], arr[2], arr[1], 1, 2, 2};
-                }
-
 
             }
 
