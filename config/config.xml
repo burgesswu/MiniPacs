@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<weSync>
+<weSync> 
   <status> 
     <lastSyncTime>2016-05-27 09:53:00</lastSyncTime>  
     <lastKeepTime>10.125</lastKeepTime>  
     <successTime>35</successTime>  
-    <failTime>9</failTime> 
+    <failTime>10</failTime> 
   </status>  
   <database> 
     <from> 
-      <type>SQL Server</type>  
-      <host>127.0.0.1</host>  
-      <name>TEST_2017</name>  
-      <user></user>
-      <password></password>
-    </from>  
-    <to> 
       <type>MySQL</type>  
-      <host>localhost</host>  
-      <name>TEST_2017_M</name>  
-      <user></user>
-      <password></password>
-    </to> 
+      <host>127.0.0.1</host>  
+      <name>miniPacs</name>  
+      <user>c58467a2daf35de7</user>  
+      <password>24cd4abf161a54b1</password> 
+    </from> 
   </database>  
-  <schedule> 
-    <radio>false,false,false,false,false,false,true</radio>  
-    <fixtime>23:45:00</fixtime> 
-  </schedule>  
   <backup/>  
   <setting> 
     <autoBak>true</autoBak>  
-    <debugMode>false</debugMode>  
+    <debugMode>true</debugMode>  
     <strictMode>false</strictMode>  
     <mysqlPath>D:\MySQL</mysqlPath>  
-    <productname>产品A,产品B</productname>
+    <productname>产品A,产品B</productname> 
   </setting>  
   <increase> 
-    <POSITION_CODE>0</POSITION_CODE>
-  </increase> 
+    <POSITION_CODE>0</POSITION_CODE> 
+  </increase>  
+  <login> 
+    <USER_NAME>18908229278</USER_NAME>  
+    <USER_PASS>123456</USER_PASS>  
+    <TOKEN>b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070ed89fc076c920094b4a5dbd0b98f6c3473597294ab07d0758b02a5fb1f1291ac68e226962ce8b0fa787f26190c670e7943e943cc30e259b25a2695a1053b38c34f57e30344551865e5fe92d4928c9bd38a5a9437348f71426e5b096f44c13e36fca89e80eb92cfe445e1755197731ea2ea49d62a99b954851935b6de102698b222f7dbc928d3a0a8b5f0498829f7b46d58e7bc07d3102b5e</TOKEN> 
+  </login>  
+  <base> 
+    <URL>http://192.168.0.118:9527</URL>  
+    <LOCAL_PACS_AETITLE>QGN</LOCAL_PACS_AETITLE>  
+    <LOCAL_PACS_PORT>1999</LOCAL_PACS_PORT>  
+    <REMOTE_PACS_PORT>11112</REMOTE_PACS_PORT>  
+    <REMOTE_PACS_URL>139.9.157.109</REMOTE_PACS_URL>  
+    <REMOTE_PACS_AETITLE>DCM4CHEE</REMOTE_PACS_AETITLE>  
+    <LOCAL_DICOM_PATH>/home/burgess/pacs/dicom</LOCAL_DICOM_PATH>  
+    <UPLOAD_MODE>DIR</UPLOAD_MODE> 
+  </base> 
 </weSync>

@@ -6,4 +6,4 @@ script: "mvn clean package -Dmaven.test.skip=true"
 
 notifications:
   email:
-    - rememberber@163.com
+    - wurui_0@163.com
