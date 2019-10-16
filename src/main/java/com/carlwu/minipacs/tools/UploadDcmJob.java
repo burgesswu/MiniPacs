@@ -150,7 +150,7 @@ public class UploadDcmJob implements Job {
 
     private void addInLocalDb(Attributes dataset) throws SQLException {
         DbUtilMySQL instance = DbUtilMySQL.getInstance();
-        String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + dataset.getString(Tag.PatientName) + "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.StudyID) + "', '" + LocalDateTime.now() + "')";
+        String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + dataset.getString(Tag.PatientName) + "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.PatientID) + "', '" + LocalDateTime.now() + "')";
         System.out.println(sql);
         instance.executeUpdate(sql);
         instance.getConnection().commit();

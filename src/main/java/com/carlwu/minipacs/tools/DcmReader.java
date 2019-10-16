@@ -14,6 +14,7 @@ public class DcmReader {
         try {
             DicomInputStream dis = new DicomInputStream(new File(filePath));
             Attributes dataSet = dis.readDataset(-1, Tag.PixelData);
+            System.out.println(dataSet.getString(Tag.PatientID));
             return dataSet;
         } catch (IOException e) {
             e.printStackTrace();
