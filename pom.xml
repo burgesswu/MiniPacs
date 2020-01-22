@@ -22,7 +22,7 @@
         <jaxen.version>1.1.6</jaxen.version>
         <saxpath.version>1.0-FCS</saxpath.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <dcm4che.version>15.18.1</dcm4che.version>
+        <dcm4che.version>5.18.1</dcm4che.version>
     </properties>
 
     <dependencies>
@@ -118,48 +118,43 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.61</version>
         </dependency>
-        <dependency>
-            <groupId>org.dcm4che</groupId>
-            <artifactId>dcm4che-imageio</artifactId>
-            <version>${dcm4che.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/dcm4che-imageio-5.18.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.dcm4che</groupId>
-            <artifactId>dcm4che-core</artifactId>
-            <version>${dcm4che.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/dcm4che-core-5.18.1.jar</systemPath>
-        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.dcm4che</groupId>-->
+<!--            <artifactId>dcm4che-core</artifactId>-->
+<!--            <version>${dcm4che.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.dcm4che</groupId>
             <artifactId>dcm4che-net</artifactId>
             <version>${dcm4che.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/dcm4che-net-5.18.1.jar</systemPath>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.dcm4che.tool/dcm4che-tool-storescp -->
         <dependency>
-            <groupId>org.dcm4che</groupId>
+            <groupId>org.dcm4che.tool</groupId>
             <artifactId>dcm4che-tool-storescp</artifactId>
             <version>${dcm4che.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/dcm4che-tool-storescp-5.18.1.jar</systemPath>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.dcm4che.tool/dcm4che-tool-storescu -->
         <dependency>
-            <groupId>org.dcm4che</groupId>
+            <groupId>org.dcm4che.tool</groupId>
             <artifactId>dcm4che-tool-storescu</artifactId>
             <version>${dcm4che.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/dcm4che-tool-storescu-5.18.1.jar</systemPath>
         </dependency>
+
         <dependency>
             <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-imageio</artifactId>
+            <version>${dcm4che.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.dcm4che.tool/dcm4che-tool-common -->
+        <dependency>
+            <groupId>org.dcm4che.tool</groupId>
             <artifactId>dcm4che-tool-common</artifactId>
             <version>${dcm4che.version}</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/dcm4che-tool-common-5.18.1.jar</systemPath>
         </dependency>
+
 
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -215,11 +210,44 @@
             <version>${pinyin4j.version}</version>
         </dependency>
 
-
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>Dcm4Che</id>
+            <name>Dcm4Che</name>
+            <url>http://www.dcm4che.org/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>Dcm4Che2</id>
+            <name>Dcm4Che2</name>
+            <url>https://mvnrepository.com/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -234,14 +262,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.2.0</version>
                 <configuration>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>com.carlwu.minipacs.App</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
+
                     </archive>
                 </configuration>
             </plugin>
@@ -257,6 +288,9 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
                         </configuration>
                     </execution>

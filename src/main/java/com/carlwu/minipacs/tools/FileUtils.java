@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.opencsv.CSVReader;
+//import com.opencsv.CSVReader;
 //import org.apache.commons.io.FileUtils;
 
 /**
@@ -181,38 +181,38 @@ public class FileUtils {
      * @return 内容List（每行的字符串数组）
      * @throws IOException
      */
-    public static ArrayList<String[]> getCsvFileContentList(File csvFile) throws IOException {
-        FileReader fReader = null;
-        CSVReader csvReader = null;
-        ArrayList<String[]> list;
-
-        try {
-            // 初始化reader
-            fReader = new FileReader(csvFile);
-            csvReader = new CSVReader(fReader);
-            // 读取解析csv文件
-            list = (ArrayList<String[]>) csvReader.readAll();
-            return list;
-
-        } catch (IOException e) {
-            throw e;
-        } finally {
-            if (fReader != null) {
-                try {
-                    fReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (csvReader != null) {
-                try {
-                    csvReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    public static ArrayList<String[]> getCsvFileContentList(File csvFile) throws IOException {
+//        FileReader fReader = null;
+//        CSVReader csvReader = null;
+//        ArrayList<String[]> list;
+//
+//        try {
+//            // 初始化reader
+//            fReader = new FileReader(csvFile);
+//            csvReader = new CSVReader(fReader);
+//            // 读取解析csv文件
+//            list = (ArrayList<String[]>) csvReader.readAll();
+//            return list;
+//
+//        } catch (IOException e) {
+//            throw e;
+//        } finally {
+//            if (fReader != null) {
+//                try {
+//                    fReader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            if (csvReader != null) {
+//                try {
+//                    csvReader.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     /**
      * 读取sql文件到List
@@ -312,7 +312,7 @@ public class FileUtils {
             }
             if (tempList[i].isDirectory()) {
                 //这里就不递归了，
-                dcmFilePath= getFilesOfOne(tempList[i].getAbsolutePath());
+                dcmFilePath = getFilesOfOne(tempList[i].getAbsolutePath());
 //                System.out.println(dcmFilePath);
             }
         }
@@ -324,6 +324,9 @@ public class FileUtils {
     public static List<String> getDcmDir(String path) {
         List<String> files = new ArrayList<String>();
         File file = new File(path);
+        if(!file.exists()){
+            file.mkdirs();
+        }
         File[] tempList = file.listFiles();
 
         for (int i = 0; i < tempList.length; i++) {
@@ -402,7 +405,7 @@ public class FileUtils {
 
 
     public static void main(String[] args) {
-       String files = getFilesOfOne("/home/burgess/pacs/dicom/201803502_1.2.840.113619.2.278.3.839569194.406.1566954974.988_Lan Heng Fu");
+        String files = getFilesOfOne("/home/burgess/pacs/dicom/201803502_1.2.840.113619.2.278.3.839569194.406.1566954974.988_Lan Heng Fu");
         System.out.println(files);
 
     }

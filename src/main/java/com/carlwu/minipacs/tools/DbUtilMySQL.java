@@ -49,7 +49,7 @@ public class DbUtilMySQL {
      */
     private void loadConfig() {
         try {
-            String dbclassname = "com.mysql.jdbc.Driver";
+            String dbclassname = "com.mysql.cj.jdbc.Driver";
             DBUrl = ConstantsTools.CONFIGER.getHostFrom();
             DBName = ConstantsTools.CONFIGER.getNameFrom();
             DBUser = ConstantsTools.CONFIGER.getUserFrom();
@@ -65,7 +65,7 @@ public class DbUtilMySQL {
 
     private void t_loadConfig() {
         try {
-            String dbclassname = "com.mysql.jdbc.Driver";
+            String dbclassname = "com.mysql.cj.jdbc.Driver";
             DBUrl = "127.0.0.1";
             DBName = "miniPacs";
             DBUser = "root";

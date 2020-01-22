@@ -18,15 +18,15 @@ public class PACSClient  {
 //    }
 
 
-    public static void main(String[] args) throws IOException {
-        try {
-            String url = PACSClient.class.getClassLoader().getResource("rel-sop-classes.properties").getPath();
-            String directory = "/home/burgess/pacs/dicom/201803502/1.2.840.113619.2.278.3.839569194.406.1566954974.988/";
-            StoreSCU.main(new String[]{"storescu", "-c", "DCM4CHEE@127.0.0.1:11112", "--rel-sop-classes", url, directory });
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
+//    public static void main(String[] args) throws IOException {
+//        try {
+//            String url = PACSClient.class.getClassLoader().getResource("rel-sop-classes.properties").getPath();
+//            String directory = "/home/burgess/pacs/dicom/201803502/1.2.840.113619.2.278.3.839569194.406.1566954974.988/";
+//            StoreSCU.main(new String[]{"storescu", "-c", "DCM4CHEE@127.0.0.1:11112", "--rel-sop-classes", url, directory });
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
 
 }
