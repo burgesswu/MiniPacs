@@ -10,7 +10,7 @@
   <database> 
     <from> 
       <type>MySQL</type>  
-      <host>127.0.0.1</host>  
+      <host>1127.0.0.1</host>
       <name>miniPacs</name>  
       <user>c58467a2daf35de7</user>  
       <password>24cd4abf161a54b1</password> 
@@ -28,9 +28,9 @@
     <POSITION_CODE>0</POSITION_CODE> 
   </increase>  
   <login> 
-    <USER_NAME>18908229278</USER_NAME>  
+    <USER_NAME>18782950220</USER_NAME>  
     <USER_PASS>123456</USER_PASS>  
-    <TOKEN>b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070ed89fc076c920094b4a5dbd0b98f6c34776dd31322e916b4423edfec530637a068e226962ce8b0fa787f26190c670e7943e943cc30e259b25a2695a1053b38c34f57e30344551865e5fe92d4928c9bd38a5a9437348f71426e5b096f44c13e36fca89e80eb92cfe4139ac72926349dc2a4a7ba6427df487b4e4637dea04f474a2ac4ceb3f9838597ad1c2b7f42fd40f76ab454cccd770bb7</TOKEN> 
+    <TOKEN>b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070ed89fc076c920094e8f645c3d8b85bee22ccbaee9a5a20be1ffdb4d0a32ccc57e5fe92d4928c9bd3bdb09ed180c4eb615d0175220b19dff3817ecb345d60afa31c4f8f46fd7b53f0a400bd6ead7d7fb2d554ae81acd456ce5a876064578642ab8ce90294291a95863c461f76df9319f0ae3aeeb599dd9b24b836c0dcddceded9a56b852886dcc0a163db7d1f2618ee18130e33493fd6f127735e72bbc243b3cc</TOKEN> 
   </login>  
   <base> 
     <URL>https://api.qgniao.com</URL>  

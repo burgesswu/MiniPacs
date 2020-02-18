@@ -49,6 +49,7 @@ public class CheckDcmJob implements Job {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             log.error(e.getMessage());
         }
 

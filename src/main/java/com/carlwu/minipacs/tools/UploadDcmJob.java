@@ -107,11 +107,15 @@ public class UploadDcmJob implements Job {
                                     try {
                                         log.info("开始上传.....");
                                         startNoticeToServiceSys(dataSet);
-                                        String url = PACSClient.class.getClassLoader().getResource("rel-sop-classes.properties").getPath();
+                                        String root = System.getProperty("user.dir");
+                                        String url = root + ("/config/rel-sop-classes.properties");
                                         StoreSCU.main(new String[]{"storescu", "-c", ConstantsTools.CONFIGER.getRemotePacsAeTitle() + "@" + ConstantsTools.CONFIGER.getRemotePacsUrl() + ":" + ConstantsTools.CONFIGER.getRemotePacsPort(), "--rel-sop-classes", url, filePath});
                                         log.info("上传完成......");
                                         updateNoticeToServiceSys(dataSet, 1);
                                         updateLocalDb(dataSet);
+                                        log.info("删除本地文件");
+                                        FileUtils.delFile(new File(filePath));
+
                                     } catch (Exception e) {
                                         System.out.println(e.getMessage());
                                     }
@@ -159,7 +163,7 @@ public class UploadDcmJob implements Job {
 
     private void updateLocalDb(Attributes dataset) throws SQLException {
         DbUtilMySQL instance = DbUtilMySQL.getInstance();
-        String sql="UPDATE `files_log` SET end_time='" + LocalDateTime.now() + "' ,upload_status=3  WHERE uid='" + dataset.getString(Tag.StudyInstanceUID) + "'";
+        String sql = "UPDATE `files_log` SET end_time='" + LocalDateTime.now() + "' ,upload_status=3  WHERE uid='" + dataset.getString(Tag.StudyInstanceUID) + "'";
         instance.executeUpdate(sql);
         instance.getConnection().commit();
     }

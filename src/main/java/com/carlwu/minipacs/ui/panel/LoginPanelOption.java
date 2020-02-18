@@ -204,6 +204,7 @@ public class LoginPanelOption extends JPanel {
                         //启动pacs服务
                         new PACSServer().run();
                     } catch (Exception e1) {
+                        e1.printStackTrace();
                         logger.error(e1.getMessage());
                     }
 

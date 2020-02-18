@@ -11,7 +11,8 @@ import java.util.Properties;
 public class PACSServer  implements Runnable{
 
     public  void startServer(){
-        String url = PACSServer.class.getClassLoader().getResource("/sop-classes.properties").getPath();
+        String root = System.getProperty("user.dir");
+        String url = root+("/config/sop-classes.properties");
         String directory = ConstantsTools.CONFIGER.getLocalDicomPath();
         String aeTitle=ConstantsTools.CONFIGER.getLocalPacsAeTitle();
         String port=ConstantsTools.CONFIGER.getLocalPacsPort();

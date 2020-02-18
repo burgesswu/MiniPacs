@@ -174,6 +174,19 @@ public class FileUtils {
 
     }
 
+    public static boolean delFile(File file) {
+        if (!file.exists()) {
+            return false;
+        }
+
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                delFile(f);
+            }
+        }
+        return file.delete();
+    }
     /**
      * 读取csv文件到List
      *
@@ -336,7 +349,7 @@ public class FileUtils {
             if (tempList[i].isDirectory()) {
                 String fileName = tempList[i].getName();
                 String[] arr = fileName.split("_");
-                if (arr != null && arr.length == 3) {
+                if (arr != null && arr.length == 5) {
                     files.add(fileName);
                 }
 
