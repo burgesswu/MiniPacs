@@ -3,6 +3,7 @@ package com.carlwu.minipacs.tools;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.carlwu.minipacs.PACSClient;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.dcm4che3.data.Attributes;
@@ -13,6 +14,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -62,6 +64,7 @@ public class UploadDcmJob implements Job {
                                 storeMap.put("data", dataSet);
                                 uploadQueue.put(fileKey, storeMap);
                                 new Thread(new Runnable() {
+                                    @SneakyThrows
                                     @Override
                                     public void run() {
                                         log.info("上传" + filePath + ".zip");
@@ -134,11 +137,11 @@ public class UploadDcmJob implements Job {
         }
     }
 
-    private void startNoticeToServiceSys(Attributes dataset) {
+    private void startNoticeToServiceSys(Attributes dataset) throws IOException {
         Map dataMap = new HashMap<String, String>();
         dataMap.put("dicomSopuid", dataset.getString(Tag.StudyInstanceUID));
         dataMap.put("type", dataset.getString(Tag.Modality));
-        dataMap.put("dicomPatientName", dataset.getString(Tag.PatientName));
+        dataMap.put("dicomPatientName", new String(dataset.getBytes(Tag.PatientName),"GB18030"));
         dataMap.put("dicomSex", (dataset.getString(Tag.PatientSex).equals("F") ? 2 : 1) + "");
         String res = HttpUtil.post(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", dataMap, ConstantsTools.CONFIGER.getToken());
         log.info(res);
@@ -152,9 +155,9 @@ public class UploadDcmJob implements Job {
     }
 
 
-    private void addInLocalDb(Attributes dataset) throws SQLException {
+    private void addInLocalDb(Attributes dataset) throws SQLException, IOException {
         DbUtilMySQL instance = DbUtilMySQL.getInstance();
-        String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + dataset.getString(Tag.PatientName) + "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.PatientID) + "', '" + LocalDateTime.now() + "')";
+        String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + new String(dataset.getBytes(Tag.PatientName),"GB18030" )+ "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.PatientID) + "', '" + LocalDateTime.now() + "')";
         System.out.println(sql);
         instance.executeUpdate(sql);
         instance.getConnection().commit();

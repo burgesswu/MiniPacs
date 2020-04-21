@@ -119,11 +119,13 @@
             <version>1.2.61</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.dcm4che</groupId>-->
-<!--            <artifactId>dcm4che-core</artifactId>-->
-<!--            <version>${dcm4che.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.dcm4che</groupId>
+            <artifactId>dcm4che-core</artifactId>
+            <version>${dcm4che.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/dcm4che-core-5.22.1.jar</systemPath>
+        </dependency>
         <dependency>
             <groupId>org.dcm4che</groupId>
             <artifactId>dcm4che-net</artifactId>
