@@ -22,7 +22,7 @@
         <jaxen.version>1.1.6</jaxen.version>
         <saxpath.version>1.0-FCS</saxpath.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <dcm4che.version>5.18.1</dcm4che.version>
+        <dcm4che.version>5.22.1</dcm4che.version>
     </properties>
 
     <dependencies>
@@ -127,15 +127,26 @@
             <systemPath>${project.basedir}/lib/dcm4che-core-5.22.1.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>org.dcm4che.tool</groupId>
+            <artifactId>dcm4che-tool-common</artifactId>
+            <version>${dcm4che.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/dcm4che-tool-common-5.22.1.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.dcm4che</groupId>
             <artifactId>dcm4che-net</artifactId>
             <version>${dcm4che.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/dcm4che-net-5.22.1.jar</systemPath>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.dcm4che.tool/dcm4che-tool-storescp -->
         <dependency>
             <groupId>org.dcm4che.tool</groupId>
             <artifactId>dcm4che-tool-storescp</artifactId>
             <version>${dcm4che.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/dcm4che-tool-storescp-5.22.1.jar</systemPath>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.dcm4che.tool/dcm4che-tool-storescu -->
@@ -143,19 +154,23 @@
             <groupId>org.dcm4che.tool</groupId>
             <artifactId>dcm4che-tool-storescu</artifactId>
             <version>${dcm4che.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/dcm4che-tool-storescu-5.22.1.jar</systemPath>
         </dependency>
 
         <dependency>
             <groupId>org.dcm4che</groupId>
             <artifactId>dcm4che-imageio</artifactId>
             <version>${dcm4che.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/dcm4che-imageio-5.22.1.jar</systemPath>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.dcm4che.tool/dcm4che-tool-common -->
-        <dependency>
-            <groupId>org.dcm4che.tool</groupId>
-            <artifactId>dcm4che-tool-common</artifactId>
-            <version>${dcm4che.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.dcm4che.tool</groupId>-->
+<!--            <artifactId>dcm4che-tool-common</artifactId>-->
+<!--            <version>${dcm4che.version}</version>-->
+<!--        </dependency>-->
 
 
         <dependency>

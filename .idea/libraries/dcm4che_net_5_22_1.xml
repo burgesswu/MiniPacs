@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dcm4che-net-5.22.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/dcm4che-net-5.22.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

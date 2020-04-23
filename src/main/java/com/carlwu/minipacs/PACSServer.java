@@ -17,6 +17,7 @@ public class PACSServer  implements Runnable{
         String aeTitle=ConstantsTools.CONFIGER.getLocalPacsAeTitle();
         String port=ConstantsTools.CONFIGER.getLocalPacsPort();
         StoreSCP.main(new String[]{"storescp", "-b", aeTitle+":"+port, "--sop-classes", url, "--directory", directory, "--filepath", "{00100020}_{0020000D}_{00100010}_{00100040}_{00080061}/{0020000E}/{00080018}.dcm"});
+//        StoreSCP.main(new String[]{"storescp", "-b", aeTitle+":"+port, "--sop-classes", url, "--directory", directory});
 
     }
 
