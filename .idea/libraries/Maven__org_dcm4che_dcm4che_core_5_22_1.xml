@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.dcm4che:dcm4che-core:5.22.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dcm4che/dcm4che-core/5.22.1/dcm4che-core-5.22.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dcm4che/dcm4che-core/5.22.1/dcm4che-core-5.22.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dcm4che/dcm4che-core/5.22.1/dcm4che-core-5.22.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

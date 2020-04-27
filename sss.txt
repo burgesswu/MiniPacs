@@ -1,0 +1,8 @@
+storescu -c QGN@127.0.0.1:1999 C:\Users\Burgess\Desktop\刘春梅\AT0867_77868206100.155840759.dcm;
+
+mvn install:install-file -DgroupId=org.dcm4che -DartifactId=dcm4che-core -Dversion=5.22.1 -Dpackaging=jar -Dfile=F:\IdeaProjects\MiniPacs\lib\dcm4che-core-5.22.1.jar
+mvn install:install-file -DgroupId=org.dcm4che -DartifactId=dcm4che-imageio -Dversion=5.22.1 -Dpackaging=jar -Dfile=F:\IdeaProjects\MiniPacs\lib\dcm4che-imageio-5.22.1.jar
+mvn install:install-file -DgroupId=org.dcm4che -DartifactId=dcm4che-net -Dversion=5.22.1 -Dpackaging=jar -Dfile=F:\IdeaProjects\MiniPacs\lib\dcm4che-net-5.22.1.jar
+mvn install:install-file -DgroupId=org.dcm4che -DartifactId=dcm4che-tool-common -Dversion=5.22.1 -Dpackaging=jar -Dfile=F:\IdeaProjects\MiniPacs\lib\dcm4che-tool-common-5.22.1.jar
+mvn install:install-file -DgroupId=org.dcm4che -DartifactId=dcm4che-tool-storescp -Dversion=5.22.1 -Dpackaging=jar -Dfile=F:\IdeaProjects\MiniPacs\lib\dcm4che-tool-storescp-5.22.1.jar
+mvn install:install-file -DgroupId=org.dcm4che -DartifactId=dcm4che-tool-storescu -Dversion=5.22.1 -Dpackaging=jar -Dfile=F:\IdeaProjects\MiniPacs\lib\dcm4che-tool-storescu-5.22.1.jar

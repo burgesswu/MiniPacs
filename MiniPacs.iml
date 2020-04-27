@@ -11,6 +11,8 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/lib" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/config" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -44,60 +46,14 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.12" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.12.1" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.61" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: org.dcm4che:dcm4che-core:5.22.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dcm4che-core-5.22.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: org.dcm4che.tool:dcm4che-tool-common:5.22.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dcm4che-tool-common-5.22.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: org.dcm4che:dcm4che-net:5.22.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dcm4che-net-5.22.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: org.dcm4che.tool:dcm4che-tool-storescp:5.22.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dcm4che-tool-storescp-5.22.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: org.dcm4che.tool:dcm4che-tool-storescu:5.22.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dcm4che-tool-storescu-5.22.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: org.dcm4che:dcm4che-imageio:5.22.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/dcm4che-imageio-5.22.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
+    <orderEntry type="library" name="Maven: org.dcm4che:dcm4che-core:5.22.1" level="project" />
+    <orderEntry type="library" name="Maven: org.dcm4che.tool:dcm4che-tool-common:5.22.1" level="project" />
+    <orderEntry type="library" name="Maven: org.dcm4che:dcm4che-net:5.22.1" level="project" />
+    <orderEntry type="library" name="Maven: org.dcm4che.tool:dcm4che-tool-storescp:5.22.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-log4j12:1.7.29" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" name="Maven: org.dcm4che.tool:dcm4che-tool-storescu:5.22.1" level="project" />
+    <orderEntry type="library" name="Maven: org.dcm4che:dcm4che-imageio:5.22.1" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: com.vdurmont:emoji-java:3.1.3" level="project" />
