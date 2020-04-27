@@ -104,7 +104,7 @@ public class DbUtilMySQL {
         if (connection == null || !connection.isValid(10)) {
             // "jdbc:mysql://localhost/pxp2p_branch"
             connection = DriverManager.getConnection(
-                    "jdbc:mysql://" + DBUrl + "/" + DBName + "?useUnicode=true;characterEncoding=utf-8;serverTimezone=Asia/Shanghai", user, password);
+                    "jdbc:mysql://" + DBUrl + "/" + DBName + "?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai", user, password);
             // 把事务提交方式改为手工提交
             connection.setAutoCommit(false);
         }

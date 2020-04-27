@@ -163,6 +163,9 @@ public class UploadHistoryPanel extends JPanel {
             DbUtilMySQL instance = DbUtilMySQL.getInstance();
             ResultSet resultSet = instance.executeQuery("select * from files_log order by start_time desc");
             int i=0;
+//            if(resultSet.getRow()>0){
+//
+//            }
             resultSet.last();
 
             tableDatas = new Object[resultSet.getRow()][7];

@@ -13,7 +13,7 @@
       <host>127.0.0.1</host>  
       <name>miniPacs</name>  
       <user>c58467a2daf35de7</user>  
-      <password>24cd4abf161a54b1</password> 
+      <password>c58467a2daf35de7</password> 
     </from> 
   </database>  
   <backup/>  
@@ -30,7 +30,7 @@
   <login> 
     <USER_NAME>18782950220</USER_NAME>  
     <USER_PASS>123456</USER_PASS>  
-    <TOKEN>b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070ed89fc076c920094e8f645c3d8b85beee2886cf4f92f959fac7be0d6e8176d44e5fe92d4928c9bd3bdb09ed180c4eb615d0175220b19dff3817ecb345d60afa31c4f8f46fd7b53f0a400bd6ead7d7fb2d554ae81acd456ce5a876064578642ab8ce90294291a9586ba463d499e592455c323202f1da2623312973612f4d194bf448266505a15ccbe3de410f22a7667a794d6802c36e74b65f196759dadbc4c98</TOKEN> 
+    <TOKEN>b25e39b47e774b4a05b3cb1555fc377f209457c3fd339d373d3fca7b1ea8be56fdc6ed05b7ffb070ed89fc076c920094e8f645c3d8b85beee2886cf4f92f959ffdca9867a6abe472e5fe92d4928c9bd3bdb09ed180c4eb615d0175220b19dff3817ecb345d60afa31c4f8f46fd7b53f0a400bd6ead7d7fb2d554ae81acd456ce5a876064578642ab8ce90294291a9586a1091f936056c5e43a22c7e0df99ef665789134ecf2a9a51400209174bb45a540ab2438903a68fc06b34193414e9ae868622f3f70e08103b</TOKEN> 
   </login>  
   <base> 
     <URL>https://api.qgniao.com</URL>  

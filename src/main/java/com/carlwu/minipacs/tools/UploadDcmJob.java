@@ -96,7 +96,12 @@ public class UploadDcmJob implements Job {
                     long lastTime = (dirFile.lastModified() / 1000);
                     long currTime = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
                     if ((currTime - lastTime) > (60 * 5)) {
-                        addInLocalDb(dataSet);
+                        try {
+                            addInLocalDb(dataSet);
+                        }catch (Exception e){
+                            log.error(e.getMessage());
+                        }
+
                         if (!uploadQueue.containsKey(fileKey)) {
                             String onDcmPath = FileUtils.getFilesOfOne(filePath);
                             //读取文件信息
@@ -165,16 +170,23 @@ public class UploadDcmJob implements Job {
 
 
     private void updateLocalDb(Attributes dataset) throws SQLException {
-        DbUtilMySQL instance = DbUtilMySQL.getInstance();
-        String sql = "UPDATE `files_log` SET end_time='" + LocalDateTime.now() + "' ,upload_status=3  WHERE uid='" + dataset.getString(Tag.StudyInstanceUID) + "'";
-        instance.executeUpdate(sql);
-        instance.getConnection().commit();
+        try {
+            DbUtilMySQL instance = DbUtilMySQL.getInstance();
+            String sql = "UPDATE `files_log` SET end_time='" + LocalDateTime.now() + "' ,upload_status=3  WHERE uid='" + dataset.getString(Tag.StudyInstanceUID) + "'";
+            instance.executeUpdate(sql);
+            instance.getConnection().commit();
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
     }
 
     private void updateNoticeToServiceSys(Attributes dataset, Integer uploadOk) {
         //修改状态
         Map updateDataMap = new HashMap<String, String>();
-        updateDataMap.put("dicomSopuid", dataset.getString(Tag.StudyInstanceUID));
+        String StudyInstanceUID=dataset.getString(Tag.StudyInstanceUID);
+        log.info(StudyInstanceUID);
+        updateDataMap.put("dicomSopuid",StudyInstanceUID );
         updateDataMap.put("uploadOk", uploadOk + "");
         String updateRes = HttpUtil.put(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", updateDataMap, ConstantsTools.CONFIGER.getToken());
         log.info("---------------------状态更新完成------------------");

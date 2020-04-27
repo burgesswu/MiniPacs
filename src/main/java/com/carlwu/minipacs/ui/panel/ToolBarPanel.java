@@ -118,6 +118,7 @@ public class ToolBarPanel extends JPanel {
             UploadHistoryPanel.initTableData();
             UploadHistoryPanel.tableFrom.validate();
 
+
             App.mainPanelCenter.removeAll();
             App.mainPanelCenter.add(App.uploadHistoryPanel, BorderLayout.CENTER);
 
