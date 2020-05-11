@@ -264,6 +264,10 @@ public class UiConsts {
     public final static ImageIcon ICON_RECOVER_BAK_DISABLE = new ImageIcon(
             App.class.getResource("/icon/recoverBakDisable.png"));
 
+    public final static ImageIcon ICON_REFRESH_DISABLE = new ImageIcon(
+            App.class.getResource("/icon/refreshDisable.png"));
+    public final static ImageIcon ICON_REFRESH_ENABLE = new ImageIcon(
+            App.class.getResource("/icon/refreshEnable.png"));
     /**
      * 清空所有备份 默认
      */

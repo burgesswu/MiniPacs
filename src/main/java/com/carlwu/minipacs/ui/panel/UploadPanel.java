@@ -103,7 +103,6 @@ public class UploadPanel extends JPanel {
      * @return
      */
     private JPanel getPanelGridBakFrom() {
-        // 来源备份Grid
         JPanel panelGridBakFrom = new JPanel();
         panelGridBakFrom.setBackground(UiConsts.MAIN_BACK_COLOR);
         panelGridBakFrom.setLayout(new BorderLayout());

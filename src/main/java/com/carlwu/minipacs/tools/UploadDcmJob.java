@@ -3,6 +3,8 @@ package com.carlwu.minipacs.tools;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.carlwu.minipacs.PACSClient;
+import com.carlwu.minipacs.logic.bean.DataBean;
+import com.carlwu.minipacs.tools.sqlite.SqliteHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +48,6 @@ public class UploadDcmJob implements Job {
                 Attributes dataSet = DcmReader.readDcmFile(file_str);
                 if (dataSet != null) {
                     String modality = dataSet.getString(Tag.Modality);
-
 
                 }
                 String[] fNameArr = fName.split("_");
@@ -96,13 +97,14 @@ public class UploadDcmJob implements Job {
                     long lastTime = (dirFile.lastModified() / 1000);
                     long currTime = LocalDateTime.now().toEpochSecond(ZoneOffset.of("+8"));
                     if ((currTime - lastTime) > (60 * 5)) {
-                        try {
-                            addInLocalDb(dataSet);
-                        }catch (Exception e){
-                            log.error(e.getMessage());
-                        }
+
 
                         if (!uploadQueue.containsKey(fileKey)) {
+                            try {
+                                addInLocalDb(dataSet);
+                            } catch (Exception e) {
+                                log.error(e.getMessage());
+                            }
                             String onDcmPath = FileUtils.getFilesOfOne(filePath);
                             //读取文件信息
                             Map<String, Object> storeMap = new HashMap<>();
@@ -121,7 +123,7 @@ public class UploadDcmJob implements Job {
                                         log.info("上传完成......");
                                         updateNoticeToServiceSys(dataSet, 1);
                                         updateLocalDb(dataSet);
-                                        log.info("删除本地文件");
+                                        log.info("删除本地文件"+filePath);
                                         FileUtils.delFile(new File(filePath));
 
                                     } catch (Exception e) {
@@ -131,6 +133,21 @@ public class UploadDcmJob implements Job {
                             }).start();
                         } else {
                             System.out.println("已经在上传列表中");
+                            //判断是否上传完成
+                            try {
+                                SqliteHelper sqliteHelper = new SqliteHelper(ConstantsTools.CONFIGER.getSqliteDB());
+                                String sql="SELECT *  from  files_log WHERE uid='"+dataSet.getString(Tag.StudyInstanceUID)+"' AND upload_status=3";
+                                DataBean dataBean =sqliteHelper.executeQuery(sql, DataBean.class);
+                                if(dataBean!=null){
+                                    //删除文件列表
+                                    log.info("删除本地文件"+filePath);
+                                    FileUtils.delFile(new File(filePath));
+
+                                }
+                            } catch (Exception e) {
+                                log.error(e.getMessage());
+                            }
+
                         }
                     }
                 }
@@ -146,7 +163,7 @@ public class UploadDcmJob implements Job {
         Map dataMap = new HashMap<String, String>();
         dataMap.put("dicomSopuid", dataset.getString(Tag.StudyInstanceUID));
         dataMap.put("type", dataset.getString(Tag.Modality));
-        dataMap.put("dicomPatientName", new String(dataset.getBytes(Tag.PatientName),"GB18030"));
+        dataMap.put("dicomPatientName", new String(dataset.getBytes(Tag.PatientName), "GB18030"));
         dataMap.put("dicomSex", (dataset.getString(Tag.PatientSex).equals("F") ? 2 : 1) + "");
         String res = HttpUtil.post(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", dataMap, ConstantsTools.CONFIGER.getToken());
         log.info(res);
@@ -161,21 +178,22 @@ public class UploadDcmJob implements Job {
 
 
     private void addInLocalDb(Attributes dataset) throws SQLException, IOException {
-        DbUtilMySQL instance = DbUtilMySQL.getInstance();
-        String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + new String(dataset.getBytes(Tag.PatientName),"GB18030" )+ "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.PatientID) + "', '" + LocalDateTime.now() + "')";
-        System.out.println(sql);
-        instance.executeUpdate(sql);
-        instance.getConnection().commit();
+        try {
+            SqliteHelper sqliteHelper = new SqliteHelper(ConstantsTools.CONFIGER.getSqliteDB());
+            String sql = "INSERT INTO `files_log` (`patient_name`, `age`, `uid`, `file_count`, `file_size`, `upload_status`, `study_no`, `start_time`) VALUES ('" + new String(dataset.getBytes(Tag.PatientName), "GB18030") + "', '" + dataset.getString(Tag.PatientAge) + "', '" + dataset.getString(Tag.StudyInstanceUID) + "', '1', '1', '1', '" + dataset.getString(Tag.PatientID) + "', '" + LocalDateTime.now() + "')";
+            sqliteHelper.executeUpdate(sql);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
     }
 
 
     private void updateLocalDb(Attributes dataset) throws SQLException {
         try {
-            DbUtilMySQL instance = DbUtilMySQL.getInstance();
+            SqliteHelper sqliteHelper = new SqliteHelper(ConstantsTools.CONFIGER.getSqliteDB());
             String sql = "UPDATE `files_log` SET end_time='" + LocalDateTime.now() + "' ,upload_status=3  WHERE uid='" + dataset.getString(Tag.StudyInstanceUID) + "'";
-            instance.executeUpdate(sql);
-            instance.getConnection().commit();
-        }catch (Exception e){
+            sqliteHelper.executeUpdate(sql);
+        } catch (Exception e) {
             log.error(e.getMessage());
         }
 
@@ -184,9 +202,9 @@ public class UploadDcmJob implements Job {
     private void updateNoticeToServiceSys(Attributes dataset, Integer uploadOk) {
         //修改状态
         Map updateDataMap = new HashMap<String, String>();
-        String StudyInstanceUID=dataset.getString(Tag.StudyInstanceUID);
+        String StudyInstanceUID = dataset.getString(Tag.StudyInstanceUID);
         log.info(StudyInstanceUID);
-        updateDataMap.put("dicomSopuid",StudyInstanceUID );
+        updateDataMap.put("dicomSopuid", StudyInstanceUID);
         updateDataMap.put("uploadOk", uploadOk + "");
         String updateRes = HttpUtil.put(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", updateDataMap, ConstantsTools.CONFIGER.getToken());
         log.info("---------------------状态更新完成------------------");

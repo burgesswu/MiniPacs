@@ -28,7 +28,7 @@ public class MulUploadDialog extends JDialog {
     private JTextField textFieldComment;
 
     public void init() {
-        this.setBounds(460, 220, 400, 250);
+        this.setBounds(460, 220, 460, 250);
         JPanel panelDialog = new JPanel(new BorderLayout());
         panelDialog.setBackground(UiConsts.MAIN_BACK_COLOR);
         JPanel panelDialogCenter = new JPanel(new FlowLayout(FlowLayout.LEFT, UiConsts.MAIN_H_GAP, 10));

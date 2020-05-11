@@ -15,7 +15,7 @@ import java.util.Map;
 public class SqliteTest {
     public static void main(String args[]) {
         try {
-            SqliteHelper h = new SqliteHelper("testHelper.db");
+            SqliteHelper h = new SqliteHelper("testHelper1.db");
             // drop表栗子
             //h.executeUpdate("drop table if exists test;");
             // create表栗子

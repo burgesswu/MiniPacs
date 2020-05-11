@@ -1,5 +1,8 @@
 package com.carlwu.minipacs;
 
+import com.carlwu.minipacs.tools.ConstantsTools;
+import com.carlwu.minipacs.tools.sqlite.ResultSetExtractor;
+import com.carlwu.minipacs.tools.sqlite.SqliteHelper;
 import com.carlwu.minipacs.ui.UiConsts;
 import com.carlwu.minipacs.ui.dialog.DbBackUpCreateDialog;
 import com.carlwu.minipacs.ui.dialog.MulUploadDialog;
@@ -12,6 +15,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.sql.ResultSet;
 
 /**
  * 程序入口，主窗口Frame
@@ -44,12 +49,49 @@ public class App {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
+
                 App window = new App();
                 window.frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
+    }
+
+
+    private static void initDb() {
+
+        //初始化数据库
+        try {
+            String dbDirectory = ConstantsTools.CONFIGER.getSqliteDB();
+            File fileDir = new File(dbDirectory);
+
+            if(!fileDir.getParentFile().exists()){
+                fileDir.getParentFile().mkdirs();
+            }
+            SqliteHelper dbHelper = new SqliteHelper(dbDirectory);
+            String sql = "select count(*) tableCount from sqlite_master where type='table' and name = 'files_log';";
+            long count=dbHelper.executeQuery(sql, (ResultSetExtractor<Long>) rs -> rs.getLong("tableCount"));
+            if(count==0){
+                //创建表
+                sql="CREATE TABLE \"files_log\" (\n" +
+                        "  \"id\" integer NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
+                        "  \"patient_name\" text(255),\n" +
+                        "  \"age\" text(50),\n" +
+                        "  \"uid\" text(120),\n" +
+                        "  \"file_count\" text(255),\n" +
+                        "  \"file_size\" real,\n" +
+                        "  \"upload_status\" integer(11),\n" +
+                        "  \"study_no\" text(255),\n" +
+                        "  \"start_time\" text,\n" +
+                        "  \"end_time\" text\n" +
+                        ");";
+                dbHelper.executeUpdate(sql);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -103,6 +145,7 @@ public class App {
 
         // 添加数据库备份对话框
         addDialog();
+        initDb();
 
         frame.add(mainPanel);
 

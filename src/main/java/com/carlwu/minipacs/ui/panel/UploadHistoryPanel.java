@@ -1,35 +1,45 @@
 package com.carlwu.minipacs.ui.panel;
 
 import com.carlwu.minipacs.App;
+import com.carlwu.minipacs.logic.bean.DataBean;
 import com.carlwu.minipacs.tools.ConstantsTools;
 import com.carlwu.minipacs.tools.DbUtilMySQL;
+import com.carlwu.minipacs.tools.sqlite.RowMapper;
+import com.carlwu.minipacs.tools.sqlite.SqliteHelper;
 import com.carlwu.minipacs.ui.UiConsts;
 import com.carlwu.minipacs.ui.component.MyIconButton;
 import com.carlwu.minipacs.tools.FileUtils;
 import com.carlwu.minipacs.tools.PropertyUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * 备份面板
+ * 上传历史面板
  *
  * @author Bob
  */
+@Slf4j
 public class UploadHistoryPanel extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
     public static JTable tableFrom;
 
-    private static MyIconButton buttonNewBakFrom;
+    private static MyIconButton buttonRefresh;
 
     private static Object[][] tableDatas;
+
+    private static // 初始化表格组件
+            String[] header = new String[]{PropertyUtil.getProperty("ds.ui.backup.table.head0"), PropertyUtil.getProperty("ds.ui.backup.table.head1"), PropertyUtil.getProperty("ds.ui.backup.table.head2"), PropertyUtil.getProperty("ds.ui.backup.table.head3"), PropertyUtil.getProperty("ds.ui.backup.table.head4"), PropertyUtil.getProperty("ds.ui.backup.table.head5"), PropertyUtil.getProperty("ds.ui.backup.table.head6")};
 
     /**
      * 构造
@@ -121,24 +131,19 @@ public class UploadHistoryPanel extends JPanel {
         labelFrom.setForeground(Color.gray);
         panelFromControlLeft.add(labelFrom);
 
-        buttonNewBakFrom = new MyIconButton(UiConsts.ICON_NEW_BAK, UiConsts.ICON_NEW_BAK_ENABLE,
-                UiConsts.ICON_NEW_BAK_DISABLE, "");
-        MyIconButton buttonRecvBakFrom = new MyIconButton(UiConsts.ICON_RECOVER_BAK,
-                UiConsts.ICON_RECOVER_BAK_ENABLE, UiConsts.ICON_RECOVER_BAK_DISABLE, "");
-        MyIconButton buttonDelBakFrom = new MyIconButton(UiConsts.ICON_DEL_BAK, UiConsts.ICON_DEL_BAK_ENABLE,
-                UiConsts.ICON_DEL_BAK_DISABLE, "");
-        panelFromControlRight.add(buttonNewBakFrom);
-        panelFromControlRight.add(buttonRecvBakFrom);
-        panelFromControlRight.add(buttonDelBakFrom);
+
+        buttonRefresh = new MyIconButton(UiConsts.ICON_REFRESH_ENABLE,
+                UiConsts.ICON_REFRESH_ENABLE, UiConsts.ICON_REFRESH_DISABLE, "");
+
+
+        panelFromControlRight.add(buttonRefresh);
 
         panelFromControl.add(panelFromControlLeft);
         panelFromControl.add(panelFromControlRight);
 
         panelGridBakFrom.add(panelFromControl, BorderLayout.NORTH);
 
-        // 初始化表格组件
-        String[] header = new String[]{PropertyUtil.getProperty("ds.ui.backup.table.head0"), PropertyUtil.getProperty("ds.ui.backup.table.head1"), PropertyUtil.getProperty("ds.ui.backup.table.head2"), PropertyUtil.getProperty("ds.ui.backup.table.head3"), PropertyUtil.getProperty("ds.ui.backup.table.head4"), PropertyUtil.getProperty("ds.ui.backup.table.head5"), PropertyUtil.getProperty("ds.ui.backup.table.head6")};
-        tableFrom = new JTable(tableDatas, header);
+        tableFrom = new JTable(new DefaultTableModel(tableDatas, header));
         tableFrom.setFont(UiConsts.FONT_NORMAL);
         tableFrom.getTableHeader().setFont(UiConsts.FONT_NORMAL);
         tableFrom.getTableHeader().setBackground(UiConsts.TOOL_BAR_BACK_COLOR);
@@ -158,32 +163,32 @@ public class UploadHistoryPanel extends JPanel {
         return panelGridBakFrom;
     }
 
-    public static void initTableData() {
+    private static void InitRowData() {
         try {
-            DbUtilMySQL instance = DbUtilMySQL.getInstance();
-            ResultSet resultSet = instance.executeQuery("select * from files_log order by start_time desc");
-            int i=0;
-//            if(resultSet.getRow()>0){
-//
-//            }
-            resultSet.last();
+            SqliteHelper sqliteHelper = new SqliteHelper(ConstantsTools.CONFIGER.getSqliteDB());
+            String querySql = "select * from files_log order by start_time desc";
+            java.util.List<DataBean> rsList = sqliteHelper.executeQueryList(querySql, DataBean.class);
 
-            tableDatas = new Object[resultSet.getRow()][7];
-            resultSet.first();
-            while (resultSet.next()){
-                tableDatas[i] = new Object[]{resultSet.getInt("id"), resultSet.getString("study_no"), resultSet.getString("patient_name"), resultSet.getString("uid"), 1, 100, "待压缩"};
-                i++;
+            tableDatas = new Object[rsList == null ? 0 : rsList.size()][7];
+            for (int i = 0; i < rsList.size(); i++) {
+                DataBean dataBean = rsList.get(i);
+                tableDatas[i] = new Object[]{dataBean.getId(), dataBean.getStudy_no(), dataBean.getPatient_name(), dataBean.getUid(), 1, 100, "待压缩"};
             }
-
         } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-
+    public static void initTableData() {
+        InitRowData();
         int delay = 10000;//milliseconds
-
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-
+                log.info("重新获取历史数据");
+                InitRowData();
+                ((DefaultTableModel) tableFrom.getModel()).getDataVector().clear();
+                tableFrom.setModel(new DefaultTableModel(tableDatas, header));
+                tableFrom.updateUI();
             }
 
         };
@@ -193,7 +198,13 @@ public class UploadHistoryPanel extends JPanel {
     }
 
     private void addListener() {
-        buttonNewBakFrom.addActionListener(e -> App.dbBackUpCreateDialog.setVisible(true));
+        buttonRefresh.addActionListener(e -> {
+            log.info("刷新历史数据");
+            InitRowData();
+            ((DefaultTableModel) tableFrom.getModel()).getDataVector().clear();
+            tableFrom.setModel(new DefaultTableModel(tableDatas, header));
+            tableFrom.updateUI();
+        });
     }
 
 }

@@ -28,7 +28,9 @@ public class SettingPanelOption extends JPanel {
 
     private static JCheckBox checkBoxStrict;
 
-    private static JTextField textField;
+    private static JTextField textFieldLocalAeTitle,textFieldLocalPort,
+            textFieldRemoteAeTitle,textFieldRemotePort,textFieldRemoteUrl,
+            textFieldLocalDcmPath,textFieldLocalDbPath;
 
     private static final Logger logger = LoggerFactory.getLogger(SettingPanelOption.class);
 
@@ -84,6 +86,7 @@ public class SettingPanelOption extends JPanel {
         JPanel panelItem5 = new JPanel(new FlowLayout(FlowLayout.LEFT, UiConsts.MAIN_H_GAP, 0));
         JPanel panelItem6 = new JPanel(new FlowLayout(FlowLayout.LEFT, UiConsts.MAIN_H_GAP, 0));
         JPanel panelItem7 = new JPanel(new FlowLayout(FlowLayout.LEFT, UiConsts.MAIN_H_GAP, 0));
+        JPanel panelItem8 = new JPanel(new FlowLayout(FlowLayout.LEFT, UiConsts.MAIN_H_GAP, 0));
 
         panelItem1.setBackground(UiConsts.MAIN_BACK_COLOR);
         panelItem2.setBackground(UiConsts.MAIN_BACK_COLOR);
@@ -92,6 +95,7 @@ public class SettingPanelOption extends JPanel {
         panelItem5.setBackground(UiConsts.MAIN_BACK_COLOR);
         panelItem6.setBackground(UiConsts.MAIN_BACK_COLOR);
         panelItem7.setBackground(UiConsts.MAIN_BACK_COLOR);
+        panelItem8.setBackground(UiConsts.MAIN_BACK_COLOR);
 
         panelItem1.setPreferredSize(UiConsts.PANEL_ITEM_SIZE);
         panelItem2.setPreferredSize(UiConsts.PANEL_ITEM_SIZE);
@@ -100,34 +104,95 @@ public class SettingPanelOption extends JPanel {
         panelItem5.setPreferredSize(UiConsts.PANEL_ITEM_SIZE);
         panelItem6.setPreferredSize(UiConsts.PANEL_ITEM_SIZE);
         panelItem7.setPreferredSize(UiConsts.PANEL_ITEM_SIZE);
+        panelItem8.setPreferredSize(UiConsts.PANEL_ITEM_SIZE);
+
 
         // 各Item
+        JLabel labelLocalDbPath = new JLabel("数据存储");
+        labelLocalDbPath.setPreferredSize(new Dimension(120, 26));
+        textFieldLocalDbPath= new JTextField();
+        labelLocalDbPath.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelLocalDbPath.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalDbPath.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalDbPath.setPreferredSize(new Dimension(334, 26));
+        textFieldLocalDbPath.setEditable(false);
+        panelItem1.add(labelLocalDbPath);
+        panelItem1.add(textFieldLocalDbPath);
+
+        JLabel labelDcmPath = new JLabel("DICOM存储");
+        labelDcmPath.setPreferredSize(new Dimension(120, 26));
+        textFieldLocalDcmPath= new JTextField();
+        labelDcmPath.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelDcmPath.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalDcmPath.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalDcmPath.setPreferredSize(new Dimension(334, 26));
+        textFieldLocalDcmPath.setEditable(false);
+        panelItem2.add(labelDcmPath);
+        panelItem2.add(textFieldLocalDcmPath);
 
 
-        checkBoxAutoBak = new JCheckBox(PropertyUtil.getProperty("ds.ui.setting.autoBackUp"));
-        checkBoxAutoBak.setBackground(UiConsts.MAIN_BACK_COLOR);
-        checkBoxAutoBak.setFont(UiConsts.FONT_RADIO);
-        panelItem4.add(checkBoxAutoBak);
 
-        JLabel label = new JLabel(PropertyUtil.getProperty("ds.ui.setting.mysqlPath"));
-        textField = new JTextField();
-        label.setBackground(UiConsts.MAIN_BACK_COLOR);
-        label.setFont(UiConsts.FONT_RADIO);
-        textField.setFont(UiConsts.FONT_RADIO);
-        Dimension dm = new Dimension(334, 26);
-        textField.setPreferredSize(dm);
-        panelItem5.add(label);
-        panelItem5.add(textField);
+        JLabel labelLocalAeTitle = new JLabel("本地AETitle");
+        labelLocalAeTitle.setPreferredSize(new Dimension(120, 26));
+        textFieldLocalAeTitle= new JTextField();
+        labelLocalAeTitle.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelLocalAeTitle.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalAeTitle.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalAeTitle.setPreferredSize(new Dimension(334, 26));
+        panelItem4.add(labelLocalAeTitle);
+        panelItem4.add(textFieldLocalAeTitle);
 
-        checkBoxStrict = new JCheckBox(PropertyUtil.getProperty("ds.ui.setting.strict"));
-        checkBoxStrict.setBackground(UiConsts.MAIN_BACK_COLOR);
-        checkBoxStrict.setFont(UiConsts.FONT_RADIO);
-        panelItem6.add(checkBoxStrict);
 
-        checkBoxDebug = new JCheckBox(PropertyUtil.getProperty("ds.ui.setting.debugMode"));
-        checkBoxDebug.setBackground(UiConsts.MAIN_BACK_COLOR);
-        checkBoxDebug.setFont(UiConsts.FONT_RADIO);
-        panelItem7.add(checkBoxDebug);
+
+        JLabel labelLocalPort = new JLabel("本地端口");
+        labelLocalPort.setPreferredSize(new Dimension(120, 26));
+        textFieldLocalPort= new JTextField();
+        labelLocalPort.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelLocalPort.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalPort.setFont(UiConsts.FONT_RADIO);
+        textFieldLocalPort.setPreferredSize(new Dimension(334, 26));
+        panelItem5.add(labelLocalPort);
+        panelItem5.add(textFieldLocalPort);
+
+
+
+        JLabel labelRemoteAeTitle = new JLabel("远程AETitle");
+        labelRemoteAeTitle.setPreferredSize(new Dimension(120, 26));
+        textFieldRemoteAeTitle= new JTextField();
+        labelRemoteAeTitle.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelRemoteAeTitle.setFont(UiConsts.FONT_RADIO);
+        textFieldRemoteAeTitle.setFont(UiConsts.FONT_RADIO);
+        textFieldRemoteAeTitle.setPreferredSize(new Dimension(334, 26));
+        panelItem6.add(labelRemoteAeTitle);
+        panelItem6.add(textFieldRemoteAeTitle);
+
+
+        JLabel labelRemotePort = new JLabel("远程端口");
+        labelRemotePort.setPreferredSize(new Dimension(120, 26));
+        textFieldRemotePort= new JTextField();
+        labelRemotePort.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelRemotePort.setFont(UiConsts.FONT_RADIO);
+        textFieldRemotePort.setFont(UiConsts.FONT_RADIO);
+        textFieldRemotePort.setPreferredSize(new Dimension(334, 26));
+        panelItem7.add(labelRemotePort);
+        panelItem7.add(textFieldRemotePort);
+
+
+        JLabel labelRemoteUrl = new JLabel("远程IP地址");
+        labelRemoteUrl.setPreferredSize(new Dimension(120, 26));
+        textFieldRemoteUrl= new JTextField();
+        labelRemoteUrl.setBackground(UiConsts.MAIN_BACK_COLOR);
+        labelRemoteUrl.setFont(UiConsts.FONT_RADIO);
+        textFieldRemoteUrl.setFont(UiConsts.FONT_RADIO);
+        textFieldRemoteUrl.setPreferredSize(new Dimension(334, 26));
+        panelItem8.add(labelRemoteUrl);
+        panelItem8.add(textFieldRemoteUrl);
+
+
+
+
+
+
 
         // 组合元素
         panelGridOption.add(panelItem1);
@@ -137,6 +202,7 @@ public class SettingPanelOption extends JPanel {
         panelGridOption.add(panelItem5);
         panelGridOption.add(panelItem6);
         panelGridOption.add(panelItem7);
+        panelGridOption.add(panelItem8);
 
         panelCenter.add(panelGridOption);
         return panelCenter;
@@ -163,10 +229,14 @@ public class SettingPanelOption extends JPanel {
      * 设置当前combox选项状态
      */
     public static void setCurrentOption() {
-        checkBoxAutoBak.setSelected(Boolean.parseBoolean(ConstantsTools.CONFIGER.getAutoBak()));
-        checkBoxDebug.setSelected(Boolean.parseBoolean(ConstantsTools.CONFIGER.getDebugMode()));
-        checkBoxStrict.setSelected(Boolean.parseBoolean(ConstantsTools.CONFIGER.getStrictMode()));
-        textField.setText(ConstantsTools.CONFIGER.getMysqlPath());
+
+        textFieldLocalPort.setText(ConstantsTools.CONFIGER.getLocalPacsPort());
+        textFieldLocalAeTitle.setText(ConstantsTools.CONFIGER.getLocalPacsAeTitle());
+        textFieldLocalDcmPath.setText(ConstantsTools.CONFIGER.getLocalDicomPath());
+        textFieldLocalDbPath.setText(ConstantsTools.CONFIGER.getSqliteDB());
+        textFieldRemotePort.setText(ConstantsTools.CONFIGER.getRemotePacsPort());
+        textFieldRemoteAeTitle.setText(ConstantsTools.CONFIGER.getRemotePacsAeTitle());
+        textFieldRemoteUrl.setText(ConstantsTools.CONFIGER.getRemotePacsUrl());
     }
 
     /**
@@ -175,13 +245,15 @@ public class SettingPanelOption extends JPanel {
     private void addListener() {
         buttonSave.addActionListener(e -> {
             try {
-                ConstantsTools.CONFIGER.setAutoBak(String.valueOf(checkBoxAutoBak.isSelected()));
-                ConstantsTools.CONFIGER.setDebugMode(String.valueOf(checkBoxDebug.isSelected()));
-                ConstantsTools.CONFIGER.setStrictMode(String.valueOf(checkBoxStrict.isSelected()));
-                ConstantsTools.CONFIGER.setMysqlPath(textField.getText());
+
+                ConstantsTools.CONFIGER.setLocalPacsAeTitle(textFieldLocalAeTitle.getText());
+                ConstantsTools.CONFIGER.setLocalPacsPort(textFieldLocalPort.getText());
+                ConstantsTools.CONFIGER.setRemotePacsAeTitle(textFieldRemoteAeTitle.getText());
+                ConstantsTools.CONFIGER.setRemotePacsPort(textFieldRemotePort.getText());
+                ConstantsTools.CONFIGER.setRemotePacsUrl(textFieldRemoteUrl.getText());
                 JOptionPane.showMessageDialog(App.settingPanel, PropertyUtil.getProperty("ds.ui.save.success"),
                         PropertyUtil.getProperty("ds.ui.tips"), JOptionPane.PLAIN_MESSAGE);
-            } catch (Exception e1) {
+           } catch (Exception e1) {
                 JOptionPane.showMessageDialog(App.settingPanel, PropertyUtil.getProperty("ds.ui.save.fail") + e1.getMessage(),
                         PropertyUtil.getProperty("ds.ui.tips"),
                         JOptionPane.ERROR_MESSAGE);

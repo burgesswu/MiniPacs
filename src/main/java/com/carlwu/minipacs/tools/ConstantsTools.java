@@ -66,4 +66,5 @@ public class ConstantsTools {
     public static final String XPATH_LOCAL_DICOM_PATH = "//root/base/LOCAL_DICOM_PATH";
     public static final String XPATH_LOGIN_TOKEN = "//root/login/TOKEN";
     public static final String XPATH_UPLOAD_MODE = "//root/base/UPLOAD_MODE";
+    public static final String XPATH_SQLITE_DB = "//root/base/SQLITE_DB";
 }

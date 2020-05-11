@@ -18,7 +18,7 @@ public class ToolBarPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private static MyIconButton buttonStatus;
-    private static MyIconButton buttonDatabase;
+//    private static MyIconButton buttonDatabase;
     private static MyIconButton buttonBackup;
     private static MyIconButton buttonSetting;
 
@@ -57,15 +57,15 @@ public class ToolBarPanel extends JPanel {
 
         buttonStatus = new MyIconButton(UiConsts.ICON_STATUS_ENABLE, UiConsts.ICON_STATUS_ENABLE,
                 UiConsts.ICON_STATUS, PropertyUtil.getProperty("ds.ui.status.title"));
-        buttonDatabase = new MyIconButton(UiConsts.ICON_DATABASE, UiConsts.ICON_DATABASE_ENABLE,
-                UiConsts.ICON_DATABASE, PropertyUtil.getProperty("ds.ui.database.title"));
+//        buttonDatabase = new MyIconButton(UiConsts.ICON_DATABASE, UiConsts.ICON_DATABASE_ENABLE,
+//                UiConsts.ICON_DATABASE, PropertyUtil.getProperty("ds.ui.database.title"));
         buttonBackup = new MyIconButton(UiConsts.ICON_BACKUP, UiConsts.ICON_BACKUP_ENABLE,
                 UiConsts.ICON_BACKUP, PropertyUtil.getProperty("ds.ui.backup.title"));
         buttonSetting = new MyIconButton(UiConsts.ICON_SETTING, UiConsts.ICON_SETTING_ENABLE,
                 UiConsts.ICON_SETTING, PropertyUtil.getProperty("ds.ui.setting.title"));
 
         panelUp.add(buttonStatus);
-        panelUp.add(buttonDatabase);
+//        panelUp.add(buttonDatabase);
         panelUp.add(buttonBackup);
 
         panelDown.add(buttonSetting, BorderLayout.SOUTH);
@@ -81,7 +81,7 @@ public class ToolBarPanel extends JPanel {
         buttonStatus.addActionListener(e -> {
 
             buttonStatus.setIcon(UiConsts.ICON_STATUS_ENABLE);
-            buttonDatabase.setIcon(UiConsts.ICON_DATABASE);
+//            buttonDatabase.setIcon(UiConsts.ICON_DATABASE);
             buttonBackup.setIcon(UiConsts.ICON_BACKUP);
             buttonSetting.setIcon(UiConsts.ICON_SETTING);
 
@@ -93,25 +93,25 @@ public class ToolBarPanel extends JPanel {
 
         });
 
-        buttonDatabase.addActionListener(e -> {
-
-            buttonStatus.setIcon(UiConsts.ICON_STATUS);
-            buttonDatabase.setIcon(UiConsts.ICON_DATABASE_ENABLE);
-            buttonBackup.setIcon(UiConsts.ICON_BACKUP);
-            buttonSetting.setIcon(UiConsts.ICON_SETTING);
-
-            App.mainPanelCenter.removeAll();
-            DatabasePanelFrom.setContent();
-            App.mainPanelCenter.add(App.databasePanel, BorderLayout.CENTER);
-
-            App.mainPanelCenter.updateUI();
-
-        });
+//        buttonDatabase.addActionListener(e -> {
+//
+//            buttonStatus.setIcon(UiConsts.ICON_STATUS);
+//            buttonDatabase.setIcon(UiConsts.ICON_DATABASE_ENABLE);
+//            buttonBackup.setIcon(UiConsts.ICON_BACKUP);
+//            buttonSetting.setIcon(UiConsts.ICON_SETTING);
+//
+//            App.mainPanelCenter.removeAll();
+//            DatabasePanelFrom.setContent();
+//            App.mainPanelCenter.add(App.databasePanel, BorderLayout.CENTER);
+//
+//            App.mainPanelCenter.updateUI();
+//
+//        });
 
         buttonBackup.addActionListener(e -> {
 
             buttonStatus.setIcon(UiConsts.ICON_STATUS);
-            buttonDatabase.setIcon(UiConsts.ICON_DATABASE);
+//            buttonDatabase.setIcon(UiConsts.ICON_DATABASE);
             buttonBackup.setIcon(UiConsts.ICON_BACKUP_ENABLE);
             buttonSetting.setIcon(UiConsts.ICON_SETTING);
 
@@ -129,7 +129,7 @@ public class ToolBarPanel extends JPanel {
         buttonSetting.addActionListener(e -> {
 
             buttonStatus.setIcon(UiConsts.ICON_STATUS);
-            buttonDatabase.setIcon(UiConsts.ICON_DATABASE);
+//            buttonDatabase.setIcon(UiConsts.ICON_DATABASE);
             buttonBackup.setIcon(UiConsts.ICON_BACKUP);
             buttonSetting.setIcon(UiConsts.ICON_SETTING_ENABLE);
 

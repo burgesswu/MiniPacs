@@ -325,4 +325,14 @@ public class ConfigManager {
         writeToXml();
     }
 
+
+    public String getSqliteDB(){
+        return this.document.selectSingleNode(ConstantsTools.XPATH_SQLITE_DB).getText();
+    }
+
+    public void setSqliteDB(String path) throws Exception {
+        this.document.selectSingleNode(ConstantsTools.XPATH_SQLITE_DB).setText(path);
+        writeToXml();
+    }
+
 }
