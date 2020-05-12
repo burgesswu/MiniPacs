@@ -79,9 +79,9 @@ public class App {
                         "  \"patient_name\" text(255),\n" +
                         "  \"age\" text(50),\n" +
                         "  \"uid\" text(120),\n" +
-                        "  \"file_count\" text(255),\n" +
+                        "  \"file_count\" integer(255),\n" +
                         "  \"file_size\" real,\n" +
-                        "  \"upload_status\" integer(11),\n" +
+                        "  \"upload_status\" integer(2),\n" +
                         "  \"study_no\" text(255),\n" +
                         "  \"start_time\" text,\n" +
                         "  \"end_time\" text\n" +
