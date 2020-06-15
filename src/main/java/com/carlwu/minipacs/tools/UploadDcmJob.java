@@ -163,6 +163,8 @@ public class UploadDcmJob implements Job {
         Map dataMap = new HashMap<String, String>();
         dataMap.put("dicomSopuid", dataset.getString(Tag.StudyInstanceUID));
         dataMap.put("type", dataset.getString(Tag.Modality));
+        dataMap.put("studyDescription", new String(dataset.getBytes(Tag.StudyDescription), "GB18030"));;
+        dataMap.put("bodyPartExamined", new String(dataset.getBytes(Tag.BodyPartExamined), "GB18030"));
         dataMap.put("dicomPatientName", new String(dataset.getBytes(Tag.PatientName), "GB18030"));
         dataMap.put("dicomSex", (dataset.getString(Tag.PatientSex).equals("F") ? 2 : 1) + "");
         String res = HttpUtil.post(ConstantsTools.CONFIGER.getBaseUrl() + "/client/imageology-dicom", dataMap, ConstantsTools.CONFIGER.getToken());
