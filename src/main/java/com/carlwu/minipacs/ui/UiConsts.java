@@ -218,6 +218,45 @@ public class UiConsts {
      */
     public final static ImageIcon ICON_SAVE_DISABLE = new ImageIcon(
             App.class.getResource("/icon/saveButtonDisable.png"));
+
+
+    /**
+     * 取消 默认
+     */
+    public final static ImageIcon ICON_CANCEL = new ImageIcon(
+            App.class.getResource("/icon/cancel.png"));
+    /**
+     * 取消 激活
+     */
+    public final static ImageIcon ICON_CANCEL_ENABLE = new ImageIcon(
+            App.class.getResource("/icon/cancelEnable.png"));
+    /**
+     * 取消 失效
+     */
+    public final static ImageIcon ICON_CANCEL_DISABLE = new ImageIcon(
+            App.class.getResource("/icon/cancelDisable.png"));
+
+
+    /**
+     * 确定 默认
+     */
+    public final static ImageIcon ICON_OK = new ImageIcon(
+            App.class.getResource("/icon/ok.png"));
+    /**
+     * 确定 激活
+     */
+    public final static ImageIcon ICON_OK_ENABLE = new ImageIcon(
+            App.class.getResource("/icon/okEnable.png"));
+    /**
+     * 确定 失效
+     */
+    public final static ImageIcon ICON_OK_DISABLE = new ImageIcon(
+            App.class.getResource("/icon/okDisable.png"));
+
+
+
+
+
     /**
      * 新建备份 默认
      */
@@ -318,6 +357,16 @@ public class UiConsts {
      */
     public final static ImageIcon ICON_CLEAR_LOG_DISABLE = new ImageIcon(
             App.class.getResource("/icon/clearLogDisable.png"));
+    /**
+     * 文件选择
+     */
+    public final static ImageIcon FILE_SELECT = new ImageIcon(
+            App.class.getResource("/icon/fileSelect.png"));
+    /**
+     * 手动上传
+     */
+    public final static ImageIcon ICON_MU_UPLOAD = new ImageIcon(
+            App.class.getResource("/icon/Mu_Upload.png"));
 
     // 样式布局相关
     /**

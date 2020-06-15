@@ -3,7 +3,9 @@ package com.carlwu.minipacs.ui.dialog;
 import com.carlwu.minipacs.tools.PropertyUtil;
 import com.carlwu.minipacs.tools.ConstantsTools;
 import com.carlwu.minipacs.ui.UiConsts;
+import com.carlwu.minipacs.ui.component.MyIconButton;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.dcm4che3.tool.storescu.StoreSCU;
 
 import javax.swing.*;
@@ -36,29 +38,33 @@ public class MulUploadDialog extends JDialog {
         JPanel grid1 = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
         JPanel grid2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
 
-        JLabel labelComment = new JLabel("路径:");
-        JLabel labelProgress = new JLabel(PropertyUtil.getProperty("ds.ui.mainwindow.dialog.progress"));
+        JLabel labelComment = new JLabel("文件路径:");
+//        JLabel labelProgress = new JLabel(PropertyUtil.getProperty("ds.ui.mainwindow.dialog.progress"));
 
         textFieldComment = new JTextField();
         JProgressBar progressbar = new JProgressBar();
-        JButton selectBtn = new JButton("...");
+        JButton selectBtn
+                = new MyIconButton(UiConsts.FILE_SELECT,
+                UiConsts.FILE_SELECT, UiConsts.FILE_SELECT, "选择上传文件");
+
 
         labelComment.setFont(UiConsts.FONT_NORMAL);
-        labelProgress.setFont(UiConsts.FONT_NORMAL);
+//        labelProgress.setFont(UiConsts.FONT_NORMAL);
         textFieldComment.setFont(UiConsts.FONT_NORMAL);
 
+        Dimension preferredSize2 = new Dimension(400, 20);
         Dimension preferredSize = new Dimension(250, 30);
         textFieldComment.setPreferredSize(preferredSize);
-        progressbar.setPreferredSize(preferredSize);
+        progressbar.setPreferredSize(preferredSize2);
 
         panelDialogCenter.add(labelComment);
         panelDialogCenter.add(textFieldComment);
         panelDialogCenter.add(selectBtn);
-        panelDialogCenter.add(labelProgress);
+//        panelDialogCenter.add(labelProgress);
         panelDialogCenter.add(progressbar);
 
-        JButton buttonSure = new JButton(PropertyUtil.getProperty("ds.ui.sure"));
-        JButton buttonCancel = new JButton(PropertyUtil.getProperty("ds.ui.cancel"));
+        JButton buttonSure = new MyIconButton(UiConsts.ICON_OK,UiConsts.ICON_OK_ENABLE,UiConsts.ICON_OK_DISABLE,"确定");
+        JButton buttonCancel = new MyIconButton(UiConsts.ICON_CANCEL,UiConsts.ICON_CANCEL_ENABLE,UiConsts.ICON_CANCEL_DISABLE,"取消");
         buttonSure.setFont(UiConsts.FONT_NORMAL);
         buttonCancel.setFont(UiConsts.FONT_NORMAL);
 
@@ -87,13 +93,21 @@ public class MulUploadDialog extends JDialog {
         });
         buttonSure.addActionListener(e -> {
             try {
+
                 String url = MulUploadDialog.class.getClassLoader().getResource("rel-sop-classes.properties").getPath();
                 String directory = textFieldComment.getText();
+                if(StringUtils.isBlank(directory)){
+                    JOptionPane.showMessageDialog(null, "请先选择文件路径","温馨提示",JOptionPane.ERROR_MESSAGE);
+                }else{
                 InetAddress addr = InetAddress.getLocalHost();
+                progressbar.setValue(10);
                 StoreSCU.main(new String[]{"storescu", "-c", ConstantsTools.CONFIGER.getLocalPacsAeTitle() + "@" + addr.getHostAddress() + ":" + ConstantsTools.CONFIGER.getLocalPacsPort(), "--rel-sop-classes", url, directory});
+                progressbar.setValue(100);
+                this.dispose();}
             } catch (Exception e1) {
 //                System.out.println(e1.getMessage());
-                log.error("删除错误");
+                log.error("手动上传文件出错");
+                this.dispose();
             }
         });
     }

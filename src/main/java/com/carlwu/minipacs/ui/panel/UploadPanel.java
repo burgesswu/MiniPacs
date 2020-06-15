@@ -125,7 +125,7 @@ public class UploadPanel extends JPanel {
         labelFrom.setForeground(Color.gray);
         panelFromControlLeft.add(labelFrom);
 
-        buttonNewBakFrom = new JButton("手动上传");
+        buttonNewBakFrom = new MyIconButton(UiConsts.ICON_MU_UPLOAD,UiConsts.ICON_MU_UPLOAD,UiConsts.ICON_MU_UPLOAD,"手动上传");
         buttonNewBakFrom.setRolloverEnabled(true);
 
         panelFromControlRight.add(buttonNewBakFrom);
